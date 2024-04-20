@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.5.0 <0.7.0;
+pragma experimental ABIEncoderV2;
+
+
 // imports the hardhat console file
 import "hardhat/console.sol";
 
@@ -31,7 +34,7 @@ contract PaymentLinkContract{
     mapping(uint256 => PaymentLink) public paymentLinks;
     mapping(uint256 => Payment[]) public payments;
 
-    constructor(){}
+    constructor() public {}
 
     // function to create payment links
     function createPaymentLink(address _creator, address _recipient, uint _amount, string memory _message) public{
@@ -92,7 +95,5 @@ contract PaymentLinkContract{
 
         uint256 unique_id = 123456;
         return unique_id;
-    }
-
-    
+    }   
 }
