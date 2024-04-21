@@ -4,12 +4,22 @@ import { onMounted, ref } from 'vue'
 import { Web3 } from 'web3';
 import { BN } from 'bn.js';
 
+const dialog = ref(true);
 const contractAbi = ref(null);
 
 const contractAddress = ref(null);
 
 const contract = ref(null);
-const provider = ref(null) 
+const provider = ref(null);
+
+const formTitle = ref("Create Your Link")
+
+const paymentLink = ref({
+	'creator':'',
+	'recipient':'',
+	'amount':'',
+	'message':''
+})
 onMounted (async() => {
   // wraps a standard Web3 provider, which is linked with the celo alfajores test net
   provider.value = new Web3.providers.HttpProvider('https://alfajores-forno.celo.org');
@@ -323,6 +333,7 @@ onMounted (async() => {
 })
 
 const createLink = async() => {
+	dialog.value = true;
 	const provider = new Web3.providers.HttpProvider('https://alfajores-forno.celo-testnet.org');
 	
 	const web3 = new Web3(provider);
@@ -695,14 +706,14 @@ const createLink = async() => {
 
   // creates the contract instance
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
-
-  // calling a contract method
-  const paymentLink = await contract.methods.createPaymentLink("0x6eE165CD887334cf5a2eA2E62223de4Be482cf24","0x6eE165CD887334cf5a2eA2E62223de4Be482cf24",100,"Hello").call();
+  
+  // calling the contract method to create a payment link
+  const link = await contract.methods.createPaymentLink(paymentLink.value.creator,paymentLink.value.recipient,paymentLink.value.amount,paymentLink.value.message).call();
 
   console.log();
-  console.log(typeof paymentLink.id);
-  console.log(typeof paymentLink.id.toString(16));
-  const link_detail = await contract.methods.getPaymentLink(new BN(paymentLink.id).toString('hex')).call();
+  console.log(typeof link.id);
+  console.log(typeof link.id.toString(16));
+//   const link_detail = await contract.methods.getPaymentLink(new BN(paymentLink.id).toString('hex')).call();
 //   console.log(paymentLink);
 //   console.log(link_detail);
 
@@ -719,10 +730,56 @@ const count = ref(0)
   <h1>{{ msg }}</h1>
 
   <div class="card">
-    <button type="button" @click="createLink()">Create Link</button>
+    <button type="button" @click="dialog = true">Create Link</button>
     <p>
       Integrating the contract deployed
     </p>
+
+	<v-dialog v-model="dialog" max-width="500">
+		<v-card>
+			<v-card>
+                    <v-card-title class="px-4 pt-6 justify-space-between d-flex align-center">
+                        <span class="text-h5">{{ formTitle }}</span>
+                        <v-btn @click="dialog = false" :ripple="false" density="compact" icon="mdi-close"></v-btn>
+                    </v-card-title>
+                    <v-card-text class="px-4">
+                        <v-form class="dialog_form" ref="form" v-model="valid" lazy-validation>
+                            <v-row>
+                                <v-col cols="12" sm="6">
+                                    <v-text-field variant="outlined" v-model="paymentLink.creator" hide-details label="Creator Address"></v-text-field>
+                                </v-col>
+								<v-col cols="12" sm="6">
+                                    <v-text-field variant="outlined" v-model="paymentLink.recipient"hide-details label="Recipient Address"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                    <v-text-field
+                                        variant="outlined"
+                                        hide-details
+                                        type="number"
+										v-model="paymentLink.amount"
+                                        label="Amount"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                    <v-text-field v-model="paymentLink.message" variant="outlined" hide-details label="Message"></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-card-text>
+
+                    <div class="pa-4 d-flex justify-end gap-2">
+                        <v-spacer></v-spacer>
+                        <v-btn  @click="close" class="bg-error px-3 rounded-pill">Cancel</v-btn>
+                        <v-btn
+                            color="primary"
+                            class="px-3 rounded-pill"
+                            @click="createLink"
+                            >Create</v-btn
+                        >
+                    </div>
+                </v-card>
+		</v-card>
+	</v-dialog>
   </div>
 
 </template>
