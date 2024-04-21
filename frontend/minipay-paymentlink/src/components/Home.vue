@@ -4,7 +4,9 @@ import { onMounted, ref } from 'vue'
 import { Web3 } from 'web3';
 import { BN } from 'bn.js';
 
-const dialog = ref(true);
+const dialog = ref(false);
+const successDialog = ref(false);
+
 const contractAbi = ref(null);
 
 const contractAddress = ref(null);
@@ -13,6 +15,9 @@ const contract = ref(null);
 const provider = ref(null);
 
 const formTitle = ref("Create Your Link")
+const newLink = ref(null);
+
+const baseUrl = ref(import.meta.env.VITE_VUE_APP_BASE_URL)
 
 const paymentLink = ref({
 	'creator':'',
@@ -20,6 +25,7 @@ const paymentLink = ref({
 	'amount':'',
 	'message':''
 })
+
 onMounted (async() => {
   // wraps a standard Web3 provider, which is linked with the celo alfajores test net
   provider.value = new Web3.providers.HttpProvider('https://alfajores-forno.celo.org');
@@ -344,7 +350,7 @@ const createLink = async() => {
 //   const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
   
   // definig the contract abi
-  const contractAbi = [
+    const contractAbi = [
 	{
 		"inputs": [
 			{
@@ -699,7 +705,7 @@ const createLink = async() => {
 		"stateMutability": "view",
 		"type": "function"
 	}
-]
+	]
 
   // defining the deployed contract address
   const contractAddress = '0x55956d95255c70C41b6d4b120c97596edB6EFb34'
@@ -709,14 +715,15 @@ const createLink = async() => {
   
   // calling the contract method to create a payment link
   const link = await contract.methods.createPaymentLink(paymentLink.value.creator,paymentLink.value.recipient,paymentLink.value.amount,paymentLink.value.message).call();
-
-  console.log();
+  
+//   console.log(baseUrl);
   console.log(typeof link.id);
   console.log(typeof link.id.toString(16));
 //   const link_detail = await contract.methods.getPaymentLink(new BN(paymentLink.id).toString('hex')).call();
 //   console.log(paymentLink);
 //   console.log(link_detail);
-
+ dialog.value = false;
+ successDialog.value = true;
 };
 
 defineProps({
@@ -778,6 +785,11 @@ const count = ref(0)
                         >
                     </div>
                 </v-card>
+		</v-card>
+	</v-dialog>
+	<v-dialog v-model="successDialog">
+		<v-card class="px-4 pt-6 pb-6 justify-space-between d-flex align-center">
+			The Payment link has been created You can visit it at <a :href="baseUrl">{{ baseUrl }}</a>
 		</v-card>
 	</v-dialog>
   </div>
