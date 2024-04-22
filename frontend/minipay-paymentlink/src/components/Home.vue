@@ -788,7 +788,11 @@ const count = ref(0)
 	</v-dialog>
 	<v-dialog v-model="successDialog">
 		<v-card class="px-4 pt-6 pb-6 justify-space-between d-flex align-center">
-			The Payment link has been created You can visit it at <a :href="baseUrl">{{ baseUrl }}</a>
+			<v-col>
+				<p>
+				The Payment link has been created at <a :href="baseUrl">{{ baseUrl }}</a>
+				</p>
+			</v-col>
 		</v-card>
 	</v-dialog>
   </div>
