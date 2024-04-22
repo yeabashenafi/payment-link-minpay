@@ -37,7 +37,7 @@ contract PaymentLinkContract{
     constructor() public {}
 
     // function to create payment links
-    function createPaymentLink(address _creator, address _recipient, uint _amount, string memory _message) public{
+    function createPaymentLink(address _creator, address _recipient, uint _amount, string memory _message) public returns (PaymentLink memory){
         
         // checks the logical validity of the values input
         require(_amount > 0, "Amount must be greater than 0");
@@ -54,14 +54,22 @@ contract PaymentLinkContract{
         PaymentLink memory newLink = PaymentLink(id,_creator,_recipient,_amount,_message);
 
         // store the newly created payment link on the mapping
+        links.push(newLink);
         paymentLinks[id] = newLink;
 
-        console.log(id);
+        return newLink;
+    }
+
+    // function to get all payment links
+    function allPaymentLinks() public view returns(PaymentLink[] memory){
+
+        return links;
     }
 
     // function to get the payment link
     function getPaymentLink(uint256 _id) public view returns(PaymentLink memory) {
 
+        // uint256 id = uint256(_id);
         // checks that the link with the id exists
         require(paymentLinks[_id].id != 0, "Link does not exist");
         PaymentLink memory link = paymentLinks[_id];
