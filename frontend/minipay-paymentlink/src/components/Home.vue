@@ -2,20 +2,14 @@
 import { onMounted, ref } from 'vue'
 
 import { Web3 } from 'web3';
-import { BN } from 'bn.js';
 
 const dialog = ref(false);
 const successDialog = ref(false);
-
-const contractAbi = ref(null);
-
-const contractAddress = ref(null);
 
 const contract = ref(null);
 const provider = ref(null);
 
 const formTitle = ref("Create Your Link")
-const newLink = ref(null);
 
 const baseUrl = ref(import.meta.env.VITE_VUE_APP_BASE_URL)
 
@@ -44,6 +38,46 @@ onMounted (async() => {
 		"type": "constructor"
 	},
 	{
+		"inputs": [],
+		"name": "allPaymentLinks",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "recipient",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"internalType": "struct PaymentLinkContract.PaymentLink[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -69,9 +103,36 @@ onMounted (async() => {
 		"name": "createPaymentLink",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "recipient",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"internalType": "struct PaymentLinkContract.PaymentLink",
 				"name": "",
-				"type": "uint256"
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -328,7 +389,7 @@ onMounted (async() => {
 ]
 
   // defining the deployed contract address
-  const contractAddress = '0x9BD40AC56BFFEdb49aE8C7317bb5d4Fd2303223b'
+  const contractAddress = '0x21565836ef6CDB8Dccff7Db4E6fBE7bC40D96E1b'
 
   // creates the contract instance
   contract.value = new web3.eth.Contract(contractAbi, contractAddress);
@@ -351,6 +412,51 @@ const createLink = async() => {
   
   // definig the contract abi
     const contractAbi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "allPaymentLinks",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "recipient",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"internalType": "struct PaymentLinkContract.PaymentLink[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
 	{
 		"inputs": [
 			{
@@ -410,69 +516,6 @@ const createLink = async() => {
 			}
 		],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_link_id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "_payer",
-				"type": "address"
-			}
-		],
-		"name": "pay",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "allPaymentLinks",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "creator",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "recipient",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "message",
-						"type": "string"
-					}
-				],
-				"internalType": "struct PaymentLinkContract.PaymentLink[]",
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -571,6 +614,24 @@ const createLink = async() => {
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_link_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_payer",
+				"type": "address"
+			}
+		],
+		"name": "pay",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -705,10 +766,10 @@ const createLink = async() => {
 		"stateMutability": "view",
 		"type": "function"
 	}
-	]
+]
 
   // defining the deployed contract address
-  const contractAddress = '0x55956d95255c70C41b6d4b120c97596edB6EFb34'
+  const contractAddress = '0x21565836ef6CDB8Dccff7Db4E6fBE7bC40D96E1b'
 
   // creates the contract instance
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
