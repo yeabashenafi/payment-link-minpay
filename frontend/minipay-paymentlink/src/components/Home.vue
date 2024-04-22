@@ -722,7 +722,7 @@ const createLink = async() => {
 
   dialog.value = false;
  successDialog.value = true;
- setTimeout(console.log("Here after the timeout"),2000);
+ baseUrl.value = baseUrl.value +'/link/' + link.id
 };
 
 defineProps({
