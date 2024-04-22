@@ -620,6 +620,18 @@ postcss@^8.4.38:
     picocolors "^1.0.0"
     source-map-js "^1.2.0"
 
+qrcode-generator@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-1.4.4.tgz#63f771224854759329a99048806a53ed278740e7"
+  integrity sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==
+
+qrcode-vue3@^1.6.8:
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/qrcode-vue3/-/qrcode-vue3-1.6.8.tgz#66f86f7a45ab3044043b8447ec1b2ebea630d53b"
+  integrity sha512-LtMnwKWi58ZqHbXBcsTF/VxDYhI6RrBIrDQw8fbDVlO8p5tJBZa7TaIaVYLY937vKO2WCEBmOKksGlpm5ccEIg==
+  dependencies:
+    qrcode-generator "^1.4.4"
+
 rollup@^4.13.0:
   version "4.14.3"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-4.14.3.tgz#bcbb7784b35826d3164346fa6d5aac95190d8ba9"
