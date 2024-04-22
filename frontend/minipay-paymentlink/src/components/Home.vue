@@ -29,7 +29,7 @@ const paymentLink = ref({
 onMounted (async() => {
   // wraps a standard Web3 provider, which is linked with the celo alfajores test net
   provider.value = new Web3.providers.HttpProvider('https://alfajores-forno.celo.org');
-  const web3 = new Web3(provider);
+  const web3 = new Web3(provider.value);
   
   // opens meta mask on the browser
   const { ethereum } = window;
@@ -719,11 +719,10 @@ const createLink = async() => {
 //   console.log(baseUrl);
   console.log(typeof link.id);
   console.log(typeof link.id.toString(16));
-//   const link_detail = await contract.methods.getPaymentLink(new BN(paymentLink.id).toString('hex')).call();
-//   console.log(paymentLink);
-//   console.log(link_detail);
- dialog.value = false;
+
+  dialog.value = false;
  successDialog.value = true;
+ setTimeout(console.log("Here after the timeout"),2000);
 };
 
 defineProps({
